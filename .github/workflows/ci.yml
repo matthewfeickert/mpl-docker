@@ -26,3 +26,15 @@ jobs:
         push: false
     - name: List built images
       run: docker images
+    - name: Clone matplotlib
+      uses: actions/checkout@v2
+      with:
+        repository: matplotlib/matplotlib
+        path: matplotlib
+    - name: Build matplotlib docs
+      run: >-
+        docker run --rm
+        -v $PWD/matplotlib/:/mpl_source
+        -w /mpl_source
+        matplotlib/mpl-docker:test
+        /bin/bash -c 'python -m pip install . && make -C/mpl_source/doc html'
