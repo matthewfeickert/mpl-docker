@@ -30,6 +30,7 @@ jobs:
       if: github.event_name == 'push'
       uses: actions/checkout@v2
       with:
+        fetch-depth: 0
         repository: matplotlib/matplotlib
         path: matplotlib
     - name: Build matplotlib docs
