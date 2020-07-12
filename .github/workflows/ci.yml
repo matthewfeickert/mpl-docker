@@ -27,11 +27,13 @@ jobs:
     - name: List built images
       run: docker images
     - name: Clone matplotlib
+      if: github.event_name != 'push'
       uses: actions/checkout@v2
       with:
         repository: matplotlib/matplotlib
         path: matplotlib
     - name: Build matplotlib docs
+      if: success() && github.event_name != 'push'
       run: >-
         docker run --rm
         -v $PWD/matplotlib/:/mpl_source
