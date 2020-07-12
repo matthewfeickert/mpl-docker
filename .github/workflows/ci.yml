@@ -27,13 +27,13 @@ jobs:
     - name: List built images
       run: docker images
     - name: Clone matplotlib
-      if: github.event_name != 'push'
+      if: github.event_name == 'push'
       uses: actions/checkout@v2
       with:
         repository: matplotlib/matplotlib
         path: matplotlib
     - name: Build matplotlib docs
-      if: success() && github.event_name != 'push'
+      if: success() && github.event_name == 'push'
       run: >-
         docker run --rm
         -v $PWD/matplotlib/:/mpl_source
@@ -42,7 +42,7 @@ jobs:
         /bin/bash -c 'python -m pip install . && make -C/mpl_source/doc html'
       # if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
     - name: Deploy docs to GitHub Pages
-      if: success() && github.event_name != 'push'
+      if: success() && github.event_name == 'push'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
